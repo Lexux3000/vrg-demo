@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { Container, Box } from "@mui/material";
+import Map from "./components/MapDisplay";
+import SimulationControls from "./components/SimControls";
+import UnitInfo from "./components/UnitInfo";
+import LogPanel from "./components/LogDisplay";
 
-function App() {
+const App: React.FC = () => {
+  const [logEntries, setLogEntries] = useState<string[]>([]);
+
+  const handleAction = (action: string) => {
+    setLogEntries((prev) => [...prev, `[${new Date().toLocaleTimeString()}] ${action}`]);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container maxWidth="xl" sx={{ display: "flex", height: "100vh", padding: 0 }}>
+      {/* Map */}
+      <Box sx={{ flex: 1 }}>
+        <Map />
+      </Box>
+
+      {/* Menu */}
+      <Box
+        sx={{
+          width: "300px",
+          backgroundColor: "#f4f4f4",
+          display: "flex",
+          flexDirection: "column",
+          padding: 2,
+          boxShadow: "-2px 0px 4px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <SimulationControls onAction={handleAction} />
+        <UnitInfo />
+        <LogPanel logEntries={logEntries} />
+      </Box>
+    </Container>
   );
-}
+};
 
 export default App;
