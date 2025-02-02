@@ -1,7 +1,12 @@
 import React from "react";
-import { Paper, Typography } from "@mui/material";
+import { Paper, Typography, Divider } from "@mui/material";
+import { Feature } from "ol";
 
-const UnitInfo: React.FC = () => {
+interface UnitInfoProps {
+  selectedUnit: Feature | null;
+}
+
+const UnitInfo: React.FC<UnitInfoProps> = ({ selectedUnit }) => {
   return (
     <Paper
       elevation={2}
@@ -16,7 +21,40 @@ const UnitInfo: React.FC = () => {
       <Typography variant="h6" sx={{ mb: 1 }}>
         Unit Info
       </Typography>
-      <Typography variant="body2">Click a unit to view details here.</Typography>
+      
+      {selectedUnit ? (
+        <>
+          <Typography variant="body1">
+            <strong>Name:</strong> {selectedUnit.get("name")}
+          </Typography>
+          <Typography variant="body2">
+            <strong>Type:</strong> {selectedUnit.get("type")}
+          </Typography>
+          <Typography variant="body2">
+            <strong>Role:</strong> {selectedUnit.get("role")}
+          </Typography>
+          <Divider sx={{ my: 1 }} />
+          <Typography variant="body2">
+            <strong>Health:</strong> {selectedUnit.get("health")}%
+          </Typography>
+          <Typography variant="body2">
+            <strong>Speed:</strong> {selectedUnit.get("speed")} km/h
+          </Typography>
+          <Typography variant="body2">
+            <strong>Ammo:</strong> {selectedUnit.get("ammo")}
+          </Typography>
+          <Typography variant="body2">
+            <strong>Task:</strong> {selectedUnit.get("task")}
+          </Typography>
+          <Typography variant="body2">
+            <strong>Damage:</strong> {selectedUnit.get("damage")}
+          </Typography>
+        </>
+      ) : (
+        <Typography variant="body2" color="text.secondary">
+          Click a unit to view details..
+        </Typography>
+        )}
     </Paper>
   );
 };
