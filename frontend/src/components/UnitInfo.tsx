@@ -25,7 +25,7 @@ const UnitInfo: React.FC<UnitInfoProps> = ({ selectedUnit }) => {
       {selectedUnit ? (
         <>
           <Typography variant="body1">
-            <strong>Name:</strong> {selectedUnit.get("name")}
+            <strong>Callsign:</strong> {selectedUnit.get("name")}
           </Typography>
           <Typography variant="body2">
             <strong>Type:</strong> {selectedUnit.get("type")}
@@ -41,18 +41,19 @@ const UnitInfo: React.FC<UnitInfoProps> = ({ selectedUnit }) => {
             <strong>Speed:</strong> {selectedUnit.get("speed")} km/h
           </Typography>
           <Typography variant="body2">
-            <strong>Ammo:</strong> {selectedUnit.get("ammo")}
+            <strong>Ammo status:</strong> {selectedUnit.get("ammo")}
           </Typography>
           <Typography variant="body2">
-            <strong>Task:</strong> {selectedUnit.get("task")}
+            <strong>Current Task:</strong> {selectedUnit.get("task")}
           </Typography>
+          <Divider sx={{ my: 1 }} />
           <Typography variant="body2">
-            <strong>Damage:</strong> {selectedUnit.get("damage")}
+            <strong>Position:</strong> {selectedUnit.get("position")}
           </Typography>
         </>
       ) : (
         <Typography variant="body2" color="text.secondary">
-          Click a unit to view details..
+          Click on a unit to view details..
         </Typography>
         )}
     </Paper>

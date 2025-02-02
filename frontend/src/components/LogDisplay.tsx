@@ -2,7 +2,7 @@ import React from "react";
 import { Paper, Typography, Box } from "@mui/material";
 
 interface LogPanelProps {
-  logEntries: string[]; // Array of log entries
+  logEntries: string[];
 }
 
 const LogPanel: React.FC<LogPanelProps> = ({ logEntries }) => {
