@@ -8,9 +8,10 @@ import { Vector as VectorSource } from "ol/source";
 import { Select } from "ol/interaction";
 import { createUnitFeatures, highlightStyle, taskStyles, TaskKey } from "../data/unitData";
 import { Feature } from "ol";
-import { Geometry, Point, LineString } from "ol/geom";
+import { Geometry } from "ol/geom";
 import { Stroke, Style } from "ol/style";
 import { fromLonLat } from "ol/proj";
+//import CircleStyle from "ol/style/Circle";
 
 interface MapProps {
   onSelectUnit: (unit: Feature<Geometry> | null) => void;
@@ -38,18 +39,19 @@ const MapDisplay: React.FC<MapProps> = ({ onSelectUnit }) => {
       source: taskSource,
       style: (feature) => {
         const task = feature.get("task") as TaskKey;
-        return taskStyles[task];
+        return taskStyles[task]; // ✅ Uses real-world geometry now
       },
       properties: { renderBuffer: 100 },
-      declutter: true
-    });
+      declutter: true,
+    });    
+    
 
     // ✅ Distance Line Layer (Pre-rendered for moving units)
     const distanceLineLayer = new VectorLayer({
       source: distanceSource,
       style: new Style({
         stroke: new Stroke({
-          color: "yellow",
+          color: "black",
           width: 2,
           lineDash: [10, 5],
         }),
@@ -61,14 +63,18 @@ const MapDisplay: React.FC<MapProps> = ({ onSelectUnit }) => {
       target: mapRef.current,
       layers: [
         new TileLayer({ source: new OSM() }),
+        taskLayer,
+        distanceLineLayer,
         unitLayer,
-        taskLayer, // ✅ Task layer exists but is not selectable
-        distanceLineLayer, // ✅ Movement lines are not selectable
       ],
       view: new View({
         center: fromLonLat([17.48049, 49.42412]),
         zoom: 15,
       }),
+    });
+
+    map.getView().on("change:resolution", () => {
+      taskLayer.getSource()?.changed();
     });
 
     // ✅ Add Select interaction, filtering only selectable features
@@ -80,14 +86,14 @@ const MapDisplay: React.FC<MapProps> = ({ onSelectUnit }) => {
     select.on("select", (e) => {
       if (selectedFeature) {
         const prevTask = selectedFeature.get("task") as TaskKey;
-        selectedFeature.setStyle(taskStyles[prevTask]); // ✅ Restore task indicator
+        selectedFeature.setStyle(taskStyles[prevTask]);
       }
 
       if (e.selected.length > 0) {
         const feature = e.selected[0];
-        const unitTask = feature.get("task") as TaskKey;
+        //const unitTask = feature.get("task") as TaskKey;
 
-        setSelectedFeature(feature);
+        //setSelectedFeature(feature);
         onSelectUnit(feature);
 
         // ✅ Highlight selected unit
@@ -102,6 +108,7 @@ const MapDisplay: React.FC<MapProps> = ({ onSelectUnit }) => {
       map.removeInteraction(select);
       map.setTarget(undefined);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onSelectUnit]);
 
   return (
