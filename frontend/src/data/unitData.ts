@@ -13,14 +13,14 @@ export const highlightStyle = {
     image: new CircleStyle({
       radius: 10,
       fill: new Fill({ color: "rgba(0, 0, 255, 0.5)" }),
-      stroke: new Stroke({ color: "blue", width: 3 }),
+      stroke: new Stroke({ color: "blue", width: 2 }),
     }),
   }),
   hostile: new Style({
     image: new CircleStyle({
       radius: 10,
       fill: new Fill({ color: "rgba(255, 0, 0, 0.5)" }),
-      stroke: new Stroke({ color: "red", width: 3 }),
+      stroke: new Stroke({ color: "red", width: 2 }),
     }),
   }),
 };
