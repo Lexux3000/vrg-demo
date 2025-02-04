@@ -11,7 +11,6 @@ import { Feature } from "ol";
 import { Geometry } from "ol/geom";
 import { Stroke, Style } from "ol/style";
 import { fromLonLat } from "ol/proj";
-//import CircleStyle from "ol/style/Circle";
 
 interface MapProps {
   onSelectUnit: (unit: Feature<Geometry> | null) => void;
@@ -21,32 +20,29 @@ const MapDisplay: React.FC<MapProps> = ({ onSelectUnit }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const [selectedFeature, setSelectedFeature] = useState<Feature<Geometry> | null>(null);
   const distanceSource = new VectorSource();
-  const taskSource = new VectorSource(); // ✅ Separate task layer
+  const taskSource = new VectorSource();
 
+  // Load units and tasks
   useEffect(() => {
     if (!mapRef.current) return;
 
-    // ✅ Load units with separate task indicators
     const unitFeatures = createUnitFeatures(distanceSource, taskSource);
     const unitLayer = new VectorLayer({
-      source: new VectorSource({
-        features: unitFeatures,
-      }),
+      source: new VectorSource({ features: unitFeatures }),
     });
 
-    // ✅ Task Layer (Non-selectable)
+    // Task layer
     const taskLayer = new VectorLayer({
       source: taskSource,
       style: (feature) => {
         const task = feature.get("task") as TaskKey;
-        return taskStyles[task]; // ✅ Uses real-world geometry now
+        return taskStyles[task]; // predefined
       },
       properties: { renderBuffer: 100 },
       declutter: true,
     });    
     
-
-    // ✅ Distance Line Layer (Pre-rendered for moving units)
+    // Task - movement
     const distanceLineLayer = new VectorLayer({
       source: distanceSource,
       style: new Style({
@@ -58,7 +54,7 @@ const MapDisplay: React.FC<MapProps> = ({ onSelectUnit }) => {
       }),
     });
 
-    // Initialize the map
+    // Initialize map
     const map = new Map({
       target: mapRef.current,
       layers: [
@@ -73,31 +69,28 @@ const MapDisplay: React.FC<MapProps> = ({ onSelectUnit }) => {
       }),
     });
 
+    // Maintain task static sizes during zoom
     map.getView().on("change:resolution", () => {
       taskLayer.getSource()?.changed();
     });
 
-    // ✅ Add Select interaction, filtering only selectable features
+    // Select interation
     const select = new Select({
-      filter: (feature) => feature.get("selectable") !== false, // ✅ Ignore non-selectable features
+      filter: (feature) => feature.get("selectable") !== false, // Ignore non-selectable
     });
     map.addInteraction(select);
 
     select.on("select", (e) => {
       if (selectedFeature) {
         const prevTask = selectedFeature.get("task") as TaskKey;
-        selectedFeature.setStyle(taskStyles[prevTask]);
+        selectedFeature.setStyle(taskStyles[prevTask]); // Restore task style
       }
 
       if (e.selected.length > 0) {
         const feature = e.selected[0];
-        //const unitTask = feature.get("task") as TaskKey;
-
-        //setSelectedFeature(feature);
         onSelectUnit(feature);
 
-        // ✅ Highlight selected unit
-        feature.setStyle(feature.get("type") === "friendly" ? highlightStyle.friendly : highlightStyle.hostile);
+        feature.setStyle(feature.get("type") === "friendly" ? highlightStyle.friendly : highlightStyle.hostile); // Highlight selected
       } else {
         setSelectedFeature(null);
         onSelectUnit(null);
@@ -108,7 +101,6 @@ const MapDisplay: React.FC<MapProps> = ({ onSelectUnit }) => {
       map.removeInteraction(select);
       map.setTarget(undefined);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onSelectUnit]);
 
   return (
