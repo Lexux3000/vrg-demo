@@ -1,6 +1,3 @@
-# develompent
-
-Jobs: https://www.jobs.cz/rpd/2000233309/?searchId=c62b3325-1e90-4c0a-9f0e-709393b71fcb&rps=233
 
 Za využití libovolných frameworků, knihoven a nástrojů navrhněte a připravte rozhraní simulátoru bojových operací. Základ by měl tvořit:
 - MenuBar
