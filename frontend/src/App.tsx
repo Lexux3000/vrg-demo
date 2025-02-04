@@ -110,7 +110,7 @@ const App: React.FC = () => {
           <Typography variant="h6">Distance Between Units</Typography>
           {distance !== null ? (
             <Typography variant="body1">
-              The distance between the selected units is <strong>{distance.toFixed(2)} km</strong>.
+              The distance between units: <strong>{distance.toFixed(2)} km</strong>.
             </Typography>
           ) : (
             <Typography variant="body2">Error calculating distance.</Typography>
