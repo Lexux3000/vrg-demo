@@ -4,6 +4,7 @@ K spuštění aplikace (terminal):
 - yarn install
 - yarn run build
 - yarn start build
+
 App should run on: http://localhost:3000/
 
 Za využití libovolných frameworků, knihoven a nástrojů navrhněte a připravte rozhraní simulátoru bojových operací. Základ by měl tvořit:
