@@ -1,38 +1,52 @@
-.App {
-  text-align: center;
+/* ✅ Smooth Fade-in Animation for the Whole App */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  animation: fadeIn 0.5s ease-in-out; /* ✅ Apply fade-in on load */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* ✅ Sidebar (Menu) Slide-in Effect */
+.sidebar {
+  animation: slideIn 0.6s ease-out;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* ✅ Button & Link Hover Effects */
+button, .App-link {
+  transition: transform 0.2s ease-in-out, background-color 0.3s;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+button:hover, .App-link:hover {
+  transform: scale(1.05);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-.App-link {
-  color: #61dafb;
+/* ✅ Keyframes for Animations */
+
+/* Fade-in Effect */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-@keyframes App-logo-spin {
+/* Sidebar Slide-in Effect */
+@keyframes slideIn {
   from {
-    transform: rotate(0deg);
+    transform: translateX(50px);
+    opacity: 0;
   }
   to {
-    transform: rotate(360deg);
+    transform: translateX(0);
+    opacity: 1;
   }
+}
+
+/* ✅ Keep Your Existing Logo Rotation */
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }

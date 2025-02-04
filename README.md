@@ -1,4 +1,3 @@
-# VRG vstupní demo
 
 Za využití libovolných frameworků, knihoven a nástrojů navrhněte a připravte rozhraní simulátoru bojových operací. Základ by měl tvořit:
 - MenuBar
