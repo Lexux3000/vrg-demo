@@ -1,0 +1,12 @@
+{
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  
+  "scripts": {
+  "start": "concurrently \"yarn start:frontend\" \"yarn start:backend\"",
+  "start:frontend": "yarn --cwd frontend start",
+  "start:backend": "yarn --cwd backend start"
+}
+
+}

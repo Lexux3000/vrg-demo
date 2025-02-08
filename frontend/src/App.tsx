@@ -4,11 +4,14 @@ import Map from "./components/MapDisplay";
 import SimulationControls from "./components/SimControls";
 import UnitInfo from "./components/UnitInfo";
 import LogPanel from "./components/LogDisplay";
+import { fetchUnits } from "./api"; // api
+import { convertUnitsToFeatures } from "./unitHelpers";
 import { Feature } from "ol";
 import { Geometry, Point } from "ol/geom";
 import { fromLonLat, toLonLat } from "ol/proj";
 
 const App: React.FC = () => {
+  const [units, setUnits] = useState<Feature<Geometry>[]>([]);
   const [logEntries, setLogEntries] = useState<string[]>([]);
   const [simulationTime, setSimulationTime] = useState(0);
   const [isSimulationRunning, setIsSimulationRunning] = useState(false);
@@ -19,6 +22,10 @@ const App: React.FC = () => {
   const [distance, setDistance] = useState<number | null>(null);
   const simulationTimeRef = useRef(0);
   const [, forceRender] = useState(0);
+
+  useEffect(() => { // fetch data
+    fetchUnits().then((data) => setUnits(convertUnitsToFeatures(data)));
+  }, []);
 
   useEffect(() => {
     if (!isSimulationRunning) return;
