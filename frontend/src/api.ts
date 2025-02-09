@@ -12,6 +12,7 @@ export const fetchUnits = async () => {
   }
 };
 
+
 // Fetch all tasks from the database
 export const fetchTasks = async () => {
   try {
@@ -31,3 +32,12 @@ export const assignTask = async (unitId: number, task: string) => {
     console.error("Error assigning task:", error);
   }
 };
+
+export const deleteTask = async (unitId: number) => {
+  try {
+    await axios.delete(`${API_BASE_URL}/tasks/${unitId}`);
+  } catch (error) {
+    console.error("Error deleting task:", error);
+  }
+};
+
